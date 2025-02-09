@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint, request, jsonify
-from classeproduto import Product, check_disponibility
+from classproduct import Product
 
 app = Flask(__name__)
 
