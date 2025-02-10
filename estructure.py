@@ -1,10 +1,16 @@
 from classproduct import Product
+import json
 
 def prod_add(prod_addition):
     if prod_addition.lower() in ['sim', 'yes', 's', 'y']:
         return True
     else:
         return False
+
+with open("db_temp.json", "r", encoding="UTF-8") as file:
+    prod_list = json.load(file)
+
+
 
 prod_list = []
 
@@ -30,7 +36,8 @@ while cond_disponibility:
     else:
         cond_disponibility = False
 
-print(prod.name)
+with open("db_proxy.json", "r", encoding="UTF=8") as file:
+    json.dump(prod_list, file, intend=4)
 
 for i in range(len(prod_list)):
     print(vars(prod_list[i]))
