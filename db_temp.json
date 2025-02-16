@@ -1,2 +1,16 @@
-db_proxy = [
+[
+    {
+        "id": 1,
+        "name": "Feijao",
+        "description": "Preto",
+        "value": "1.1",
+        "disponibility": "Sim"
+    },
+    {
+        "id": 2,
+        "name": "Arroz",
+        "description": "Vermelho",
+        "value": "23.1",
+        "disponibility": "Nao"
+    }
 ]

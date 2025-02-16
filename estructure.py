@@ -1,18 +1,22 @@
 from classproduct import Product
 import json
+import os
 
 def prod_add(prod_addition):
-    if prod_addition.lower() in ['sim', 'yes', 's', 'y']:
-        return True
-    else:
-        return False
+    return prod_addition.strip().lower() in ['sim', 'yes', 's', 'y']
 
-with open("db_temp.json", "r", encoding="UTF-8") as file:
-    prod_list = json.load(file)
+db_temp = "db_temp.json"
+if os.path.exists(db_temp) and os.path.getsize(db_temp) > 0:
+    with open(db_temp, "r", encoding="utf-8") as db:
+        try:
+            data = json.load(db)
+        except json.JSONDecodeError:
+            print("Erro: O arquivo JSON está corrompido. Criando um novo arquivo.")
+            data = []
+else:
+    data = []
 
-
-
-prod_list = []
+products_list = []
 
 prod_id = 0
 
@@ -24,21 +28,28 @@ while cond_disponibility:
     prod_name = input("Digite o nome do produto:\n")
     prod_description = input("Insira a descrição do produto\n")
     prod_value = input("Insira o valor do produto:\n")
-    prod_disponibility = input("O poroduto está disponível? 'sim' ou 'não'\n")
+    prod_disponibility = input("O produto está disponível? 'sim' ou 'não'\n")
 
-    prod = Product(prod_id, prod_name, prod_description, prod_value, prod_disponibility)
-    prod_list.append(prod)
+    new_product = Product(prod_id, prod_name, prod_description, prod_value, prod_disponibility)
+
+    product_dict = {
+        "id": prod_id,
+        "name": prod_name,
+        "description": prod_description,
+        "value": prod_value,
+        "disponibility": prod_disponibility
+    }
+
+    products_list.append(new_product)
+    data.append(product_dict)
 
     prod_addition = input("Gostaria de continuar adicionando produtos?\nResponda com 'sim' ou 'não'\n")
 
-    if prod_add(prod_addition):
-        pass
-    else:
-        cond_disponibility = False
+    if not prod_add(prod_addition):
+        break
 
-with open("db_proxy.json", "r", encoding="UTF=8") as file:
-    json.dump(prod_list, file, intend=4)
+with open(db_temp, "w") as db:
+    json.dump(data, db, indent=4)
 
-for i in range(len(prod_list)):
-    print(vars(prod_list[i]))
-
+for product in products_list:
+    print(vars(product))
